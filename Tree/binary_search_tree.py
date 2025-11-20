@@ -12,6 +12,8 @@ class BinaryTree:
         if self.root is None:
             self.root = Node(data)
             print(f"Inserted root node: {data}")
+            # Diagram after first insertion:
+            #   data
         else:
             self._insert(self.root, data)
 
@@ -20,12 +22,20 @@ class BinaryTree:
             if current.left is None:
                 current.left = Node(data)
                 print(f"Inserted {data} to left of {current.data}")
+                # Diagram:
+                #   current.data
+                #    /
+                # data
             else:
                 self._insert(current.left, data)
         else:
             if current.right is None:
                 current.right = Node(data)
                 print(f"Inserted {data} to right of {current.data}")
+                # Diagram:
+                #   current.data
+                #        \
+                #        data
             else:
                 self._insert(current.right, data)
 
@@ -57,13 +67,39 @@ class BinaryTree:
         else:
             return self.search(node.right, key)
 
-# Usage example:
+# Usage example (diagrams show incremental structure after each insert):
 bt = BinaryTree()
 bt.insert(10)
+# Diagram:
+#   10
+
 bt.insert(5)
+# Diagram:
+#     10
+#    /
+#   5
+
 bt.insert(20)
+# Diagram:
+#     10
+#    /  \
+#   5   20
+
 bt.insert(15)
+# Diagram (added to right subtree):
+#     10
+#    /  \
+#   5   20
+#       /
+#     15
+
 bt.insert(25)
+# Diagram:
+#     10
+#    /  \
+#   5   20
+#       / \
+#     15  25
 
 print("Inorder Traversal:")
 bt.inorder(bt.root)
