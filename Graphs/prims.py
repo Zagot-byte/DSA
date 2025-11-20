@@ -23,16 +23,17 @@ def prim(G):
         selected_vertex[y] = True
         no_of_edges += 1
     print("Total path Length =", total)
-graph = {
-    'A': ['B', 'C'],
-    'B': ['D', 'E'],
-    'C': ['D'],
-    'D': ['E'],
-    'E': []
-
+graph_adj = {
+    'A': [('B',2), ('C',3)],
+    'B': [('A',2), ('D',4), ('E',1)],
+    'C': [('A',3), ('D',5)],
+    'D': [('B',4), ('C',5), ('E',7)],
+    'E': [('B',1), ('D',7)],
 }
+
     A
    / \
   B   C
  / \  / 
 E   D   
+
