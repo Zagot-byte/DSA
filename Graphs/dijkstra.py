@@ -14,15 +14,19 @@ def sp(graph, start):
                     distances[neighbor] = new_distance
     return distances
 graph = {
-    'A': ['B', 'C'],
-    'B': ['D', 'E'],
-    'C': ['D'],
-    'D': ['E'],
-    'E': []
-
+    'A': [('B', 4), ('C', 7)],
+    'B': [('A', 4), ('C', 8), ('D', 5), ('E', 2)],
+    'C': [('A', 7), ('B', 8), ('F', 6)],
+    'D': [('B', 5)],
+    'E': [('B', 2)],
+    'F': [('C', 6)]
 }
-    A
-   / \
-  B   C
- / \  / 
-E   D   
+
+      A
+    /   \
+  4/     \7
+   B------C
+  / \      \
+2/   \5     \6
+ E    D      F
+
