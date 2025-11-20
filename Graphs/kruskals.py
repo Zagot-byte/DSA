@@ -36,16 +36,20 @@ def kruskal(graph):
             result.append((u, v, w))
             union(parent, rank, x, y)
     return result
-graph = {
-    'A': ['B', 'C'],
-    'B': ['D', 'E'],
-    'C': ['D'],
-    'D': ['E'],
-    'E': []
+graph = [
+    (0, 1, 4),  # A-B
+    (0, 2, 7),  # A-C
+    (1, 2, 8),  # B-C
+    (1, 3, 5),  # B-D
+    (1, 4, 2),  # B-E
+    (2, 5, 6)   # C-F
+]
 
-}
-    A
-   / \
-  B   C
- / \  / 
-E   D   
+          A
+        /   \
+     4 /     \ 7
+      B-------C
+     / \       \
+  2 /   \ 5     \ 6
+   E     D       F
+
