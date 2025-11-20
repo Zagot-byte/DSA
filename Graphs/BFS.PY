@@ -23,3 +23,9 @@ graph = {
     'E': []
 }
 bfs(graph,'A')
+
+    A
+   / \
+  B   C
+ / \  / 
+E   D   
