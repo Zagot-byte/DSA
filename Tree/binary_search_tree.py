@@ -4,109 +4,134 @@ class Node:
         self.left = None
         self.right = None
 
-class BinaryTree:
+class BinarySearchTree:
     def __init__(self):
         self.root = None
 
     def insert(self, data):
         if self.root is None:
             self.root = Node(data)
-            print(f"Inserted root node: {data}")
-            # Diagram after first insertion:
-            #   data
         else:
-            self._insert(self.root, data)
+            current = self.root
+            while True:
+                if data < current.data:
+                    if current.left is None:
+                        current.left = Node(data)
+                        break
+                    else:
+                        current = current.left
+                else:
+                    if current.right is None:
+                        current.right = Node(data)
+                        break
+                    else:
+                        current = current.right
 
-    def _insert(self, current, data):
-        if data < current.data:
-            if current.left is None:
-                current.left = Node(data)
-                print(f"Inserted {data} to left of {current.data}")
-                # Diagram:
-                #   current.data
-                #    /
-                # data
-            else:
-                self._insert(current.left, data)
+    def delete(self, key):
+        """Delete node by key, showing diagrams right in the code."""
+        self.root = self._delete(self.root, key)
+
+    def _delete(self, node, key):
+        if node is None:
+            return None
+
+        if key < node.data:
+            node.left = self._delete(node.left, key)
+        elif key > node.data:
+            node.right = self._delete(node.right, key)
         else:
-            if current.right is None:
-                current.right = Node(data)
-                print(f"Inserted {data} to right of {current.data}")
-                # Diagram:
-                #   current.data
-                #        \
-                #        data
-            else:
-                self._insert(current.right, data)
+            # CASE 1: No children (leaf)
+            if node.left is None and node.right is None:
+                print(f"Deleting leaf node: {node.data}")
+                # Before:
+                #    [parent]
+                #      /
+                # [node]
+                # After:
+                #    [parent]
+                #      /
+                #    None
+                return None
+
+            # CASE 2: Only one child
+            if node.left is None:
+                print(f"Deleting {node.data} (has only right child)")
+                # Before:
+                #  [parent]
+                #     \
+                #   [node]
+                #      \
+                #    [child]
+                # After:
+                #  [parent]
+                #     \
+                #   [child]
+                return node.right
+
+            if node.right is None:
+                print(f"Deleting {node.data} (has only left child)")
+                # Before:
+                #  [parent]
+                #    /
+                # [node]
+                #   /
+                # [child]
+                # After:
+                #  [parent]
+                #    /
+                # [child]
+                return node.left
+
+            # CASE 3: Two children
+            print(f"Deleting {node.data} (has two children)")
+            # Before:
+            #   [node]
+            #  /      \
+            # [left] [right]
+            # Find inorder successor:
+            succ = node.right
+            while succ.left:
+                succ = succ.left
+            # Swapping values:
+            print(f"Replacing {node.data} with successor {succ.data}")
+            # After swap:
+            #   [succ.data]
+            #  /          \
+            # [left]    [right subtree where succ was]
+            node.data = succ.data
+            node.right = self._delete(node.right, succ.data)
+            # After deletion of successor node:
+            # [succ.data] has correct subtree structure
+        return node
 
     def inorder(self, node):
         if node:
             self.inorder(node.left)
-            print(node.data, end=' ')
+            print(node.data, end=" ")
             self.inorder(node.right)
 
-    def preorder(self, node):
-        if node:
-            print(node.data, end=' ')
-            self.preorder(node.left)
-            self.preorder(node.right)
+# Example usage:
+bst = BinarySearchTree()
+for v in [20, 10, 30, 5, 15, 25, 35]:
+    bst.insert(v)
+print("\nInitial BST inorder:")
+bst.inorder(bst.root)
+print("\n")
 
-    def postorder(self, node):
-        if node:
-            self.postorder(node.left)
-            self.postorder(node.right)
-            print(node.data, end=' ')
+# CASE 1: Delete leaf node
+bst.delete(5)
+print("\nBST after deleting leaf (5):")
+bst.inorder(bst.root)
+print("\n")
 
-    def search(self, node, key):
-        if node is None:
-            return False
-        if node.data == key:
-            return True
-        elif key < node.data:
-            return self.search(node.left, key)
-        else:
-            return self.search(node.right, key)
+# CASE 2: Delete node with one child
+bst.delete(30)
+print("\nBST after deleting one-child node (30):")
+bst.inorder(bst.root)
+print("\n")
 
-# Usage example (diagrams show incremental structure after each insert):
-bt = BinaryTree()
-bt.insert(10)
-# Diagram:
-#   10
-
-bt.insert(5)
-# Diagram:
-#     10
-#    /
-#   5
-
-bt.insert(20)
-# Diagram:
-#     10
-#    /  \
-#   5   20
-
-bt.insert(15)
-# Diagram (added to right subtree):
-#     10
-#    /  \
-#   5   20
-#       /
-#     15
-
-bt.insert(25)
-# Diagram:
-#     10
-#    /  \
-#   5   20
-#       / \
-#     15  25
-
-print("Inorder Traversal:")
-bt.inorder(bt.root)
-print("\nPreorder Traversal:")
-bt.preorder(bt.root)
-print("\nPostorder Traversal:")
-bt.postorder(bt.root)
-
-found = bt.search(bt.root, 15)
-print(f"\nSearch 15: {'Found' if found else 'Not Found'}")
+# CASE 3: Delete node with two children
+bst.delete(10)
+print("\nBST after deleting two-child node (10):")
+bst.inorder(bst.root)
+print()
