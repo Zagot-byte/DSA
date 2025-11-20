@@ -23,4 +23,10 @@ graph = {
     'D': ['E'],
     'E': []
 }
+
 dfs(graph,'A')
+    A
+   / \
+  B   C
+ / \  / 
+E   D   
